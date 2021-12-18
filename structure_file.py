@@ -39,7 +39,6 @@ class File:
         m = self.queue
         while(m.suivant.suivant != None):
             m = m.suivant
-        print(self.tete.valeur)
         self.tete = m
         self.tete.suivant = None
 
