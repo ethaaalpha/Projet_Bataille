@@ -11,13 +11,14 @@ class Maillon:
 
 class File:
     def __init__(self):
-        self.tete = None
-        self.queue = None
+        self.debut = None
+        self.fin = None
 
     def taille(self):
-        if(self.queue == None):
+        # retourne la taille de la file
+        if(self.debut == None):
             return 0
-        m = self.queue
+        m = self.debut
         i = 1
         while(m.suivant != None):
             m = m.suivant
@@ -25,28 +26,29 @@ class File:
         return i
 
     def enfile(self, v):
-        if(self.tete == None):
-            self.tete = Maillon(v)
+        # pour ajouter élément à la file
+        if(self.debut == None):
+            self.debut = Maillon(v)
+            self.fin = Maillon(v)
             return
-        if(self.queue == None):
-            self.queue = Maillon(v, self.tete)
-            return
-        self.queue = Maillon(v, self.queue)
+        self.debut = Maillon(v, self.debut)
 
     def defile(self):
-        if(self.tete == None):
-            return "La liste est vide"
-        m = self.queue
-        while(m.suivant.suivant != None):
-            m = m.suivant
-        self.tete = m
-        self.tete.suivant = None
+        # return false si liste vide
+        if(self.debut == None):
+            return False
+        if(self.debut.suivant == None):
+            value = self.debut
+            self.debut = None
+            return value.valeur
+        else:
+            m = self.debut
+            while(m.suivant.suivant != None):
+                m = m.suivant
+            value = m.suivant
+            self.fin = m
+            self.fin.suivant = None
+            return value.valeur
 
-    def concatener(self, file):
-        if(self.tete == None):
-            return file
-        if(file.tete == None):
-            return self
-        self.tete.suivant = file.queue
-
-
+    def __str__(self):
+        return str(self.debut.suivant)

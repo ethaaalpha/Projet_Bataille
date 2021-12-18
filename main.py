@@ -1,7 +1,8 @@
 from structure_file import File
 from random import *
 
-class Simulation_JBataille():
+class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
+
     def __init__(self, configurationA=None, configurationB=None):
         if(configurationA != None and configurationB != None):
             #lancement du jeu avec une configuration personalisée
@@ -24,33 +25,29 @@ class Simulation_JBataille():
             if(cartes[i] not in self.main1):
                 self.main2.append(cartes[i])
 
+        self.main1 = self.convertirListeToFile(self.main1)
+        self.main2 = self.convertirListeToFile(self.main2)
+
         print("Joueur 1 :", self.main1)
         print("Joueur 2 :", self.main2)
+
+    def convertirListeToFile(self, l):
+        F = File()
+        for i in range(0, len(l), 1):
+            F.enfile(l[i])
+        return F
+
+    def Jeu(self, a, b):
+        a = int(str(a)[1:]) #pour supprimer le 1er chiffre
+        b = int(str(b)[1:])
+        if(a>b):
+            return "A" #carte a gagnate
+        elif(a<b):
+            return "B" #carte b gagnante
+        else:
+            return "AB" #égalité
+
+
+
 si = Simulation_JBataille()
-
-
-
-
-def distribution():
-    cartes = []
-    for j in range(1,5,1):
-        for i in range(7,15,1):
-            cartes.append(100*j+i)
-    main1 = sample(cartes, 16)
-    main2 = []
-
-    for i in range(0,32,1):
-        if(cartes[i] not in main1):
-            main2.append(cartes[i])
-
-    main1 = creer_file(main1)
-    main2 = creer_file(main2)
-
-    return [main1,main2]
-
-def creer_file(L):
-    F = File()
-    for i in range(0,len(L),1):
-        F.enfile(L[i])
-    return F
-
+si.Jeu(123,100)
