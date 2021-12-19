@@ -34,13 +34,15 @@ class File:
         self.debut = Maillon(v, self.debut)
 
     def defile(self):
-        # return false si liste vide
+        # return none si la file est vide
         if(self.debut == None):
-            return False
+            return None
         if(self.debut.suivant == None):
             value = self.debut
             self.debut = None
-            return value.valeur
+            value_ = value.valeur
+            del value
+            return value_
         else:
             m = self.debut
             while(m.suivant.suivant != None):
@@ -48,7 +50,14 @@ class File:
             value = m.suivant
             self.fin = m
             self.fin.suivant = None
+            value_ = value.valeur
+            del value_
             return value.valeur
 
     def __str__(self):
-        return str(self.debut.suivant)
+        # str de la file, si vide alors false
+        if (self.debut == None):
+            return "Vide"
+        else:
+            return str(self.debut)
+
