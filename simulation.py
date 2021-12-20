@@ -1,5 +1,5 @@
 import file_edit
-from structure_file import File
+from utils import File
 from random import *
 from file_edit import *
 
@@ -10,6 +10,7 @@ class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
         self.vainqueur = None
         if(configurationA != None and configurationB != None):
             #lancement du jeu avec une configuration personalisée
+
             self.main1 = configurationA
             self.main2 = configurationB
             return
@@ -18,14 +19,14 @@ class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
             self.distributionJeu()
         self.simulation()
 
-    def distributionJeu(self):
-        cartes = []
-        for j in range(1,5,1):
-            for i in range(7,15,1):
-                cartes.append(100*j+i)
+    def distributionJeu(self, configA=None, configB=None):
+
+
+        # Si config personnalisée
+
+
         self.main1 = sample(cartes, 16)
         self.main2 = []
-
         for i in range(0,32,1):
             if(cartes[i] not in self.main1):
                 self.main2.append(cartes[i])
@@ -39,11 +40,16 @@ class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
         self.fichier.addText("Joueur 2 :" + str(self.main2) + " [" + str(self.main2.taille()) + "]")
         self.fichier.addText("*********************")
 
-        """
-        print("Joueur 1 :", self.main1, "[",self.main1.taille(),"]")
-        print("Joueur 2 :", self.main2, "[",self.main2.taille(),"]")
-        print("##################")
-        """
+    def randomCards(self, use, nb=16): #renvoie 16 cartes au hasards en enlevant celle déjà utilisée -> use
+        # Paquet de carte basique
+        cartes = []
+        for j in range(1, 5, 1):
+            for i in range(7, 15, 1):
+                cartes.append(100 * j + i)
+        for i in use:
+            if i in cartes:
+                cartes.remove(i)
+        return sample(cartes, nb)
 
     def convertirListeToFile(self, l):
         F = File()
@@ -58,9 +64,9 @@ class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
             self.fichier.addText("---> Tour numéro :"+str(self.nombreTour))
             self.nombreTour = self.nombreTour + 1
             self.jeu()
+
         self.fichier.addText("VAINQUEUR "+str(self.vainqueur))
         self.fichier.close()
-        print("Vainqueur"+ str(self.vainqueur))
 
     def jeu(self, tas=[]):
         a_ = self.main1.defile()
@@ -75,34 +81,29 @@ class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
         b = int(str(b_)[1:])
         tas.append(a_)
         tas.append(b_)
+
         self.fichier.addText("Jeu de A: "+str(a_) +" contre B: "+ str(b_))
-        print("Jeu de a: ", str(a_), "contre b: ", str(b_))
-        print("Le tas ", tas)
+
         if(a>b):
             for i in tas:
                 self.main1.enfile(i)
             tas.clear()
             self.fichier.addText("Gagnant du tour A")
             self.fichier.addText("A: "+str(self.main1)+"["+str(self.main1.taille())+"]"+ " B:" + str(self.main2)+"["+str(self.main2.taille())+"]")
-            print("A gagnant")
-            print("A : ", self.main1, " B : ", self.main2)
-            print("A [",self.main1.taille(),"]", "B [",self.main2.taille(),"]")
             return "A" #carte a gagnante
+
         elif(a<b):
             for i in tas:
                 self.main2.enfile(i)
             tas.clear()
             self.fichier.addText("Gagnant du tour B")
             self.fichier.addText("A: " + str(self.main1) + "[" + str(self.main1.taille()) + "]" + " B:" + str(self.main2) + "[" + str(self.main2.taille()) + "]")
-            print("B gagnant")
-            print("A : ", self.main1, " B : ", self.main2)
-            print("A [", self.main1.taille(), "]", "B [", self.main2.taille(), "]")
+
             return "B" #carte b gagnante
         else:
             tas.append(self.main1.defile()) #carte retournées lors de la bataille
             tas.append(self.main2.defile())
             self.fichier.addText("* BATAILLE *")
-            print("* BATAILLE *")
             self.jeu(tas) #rejoue si bataille
 
 
