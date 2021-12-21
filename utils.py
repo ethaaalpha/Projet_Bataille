@@ -161,19 +161,21 @@ class simulationData():
         return self.numberRound*10
 
     def getData(self):
-        return (self.winner, self.numberRound, self.numberBattle, self.mainA, self.mainB, self.actions)
+        return (self.winner, self.numberRound, self.numberBattle, self.mainA, self.mainB, self.actions, self.getDuration())
 
     def __str__(self):
         return str(self.mainA)+str(self.mainB)
 class actionData():
-    def __init__(self, cardA, cardB, winner):
+    def __init__(self, cardA, cardB, winner, tmain1, tmain2):
         self.cardA = cardA
         self.cardB = cardB
         self.winner = winner
+        self.tmain1 = tmain1
+        self.tmain2 = tmain2
 
     def getData(self):
         return (self.cardA, self.cardB, self.winner)
 
     def __str__(self):
-        return ("J(A): "+ str(self.cardA)+ " contre J(B): " +str(self.cardB)+ " # Vainqueur : "+ self.winner)
+        return ("J(A)"+"("+str(self.tmain1)+"):"+ str(self.cardA)+" contre J(B)"+"("+str(self.tmain2)+"): "+str(self.cardB)+ " # Vainqueur : "+ self.winner)
 

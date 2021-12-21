@@ -36,9 +36,8 @@ class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
             if(self.data.getRounds() > 2000):
                 self.data.setWinner("Egalité")
                 self.vainqueur = "Egalité"
-
         self.data.setWinner(self.vainqueur)
-        print("Gagnant de la simulation "+self.vainqueur)
+
     def jeu(self, tas=[]):
         a_ = self.main1.defile()
         b_ = self.main2.defile()
@@ -54,25 +53,21 @@ class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
         tas.append(b_)
 
         if(a>b):
+            self.data.addAction(actionData(str(a_), str(b_), "A", self.main1.taille(), self.main2.taille()))
             for i in tas:
                 self.main1.enfile(i)
             tas.clear()
-            self.data.addAction(actionData(str(a_), str(b_), "A"))
             return "A" #carte a gagnante
 
         elif(a<b):
+            self.data.addAction(actionData(str(a_), str(b_), "B", self.main1.taille(), self.main2.taille()))
             for i in tas:
                 self.main2.enfile(i)
             tas.clear()
-            self.data.addAction(actionData(str(a_), str(b_), "B"))
             return "B" #carte b gagnante
         else:
+            self.data.addAction(actionData(str(a_), str(b_), "BATAILLE", self.main1.taille(), self.main2.taille()))
             tas.append(self.main1.defile()) #carte retournées lors de la bataille
             tas.append(self.main2.defile())
-            self.data.addAction(actionData(str(a_), str(b_), "BATAILLE"))
             self.data.addBattle()
             self.jeu(tas) #rejoue si bataille
-
-
-si = Simulation_JBataille()
-print(si.getSimulationData())

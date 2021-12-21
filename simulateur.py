@@ -15,19 +15,28 @@ class Simulateur():
             self.simulationsData.append(si.getSimulationData())
 
     def dataFile(self):
-        file = Txt_File()
-        file.addText("###########")
-        file.addText("Nombres de simulations :"+str(self.nbSim))
-        file.addText("###########")
-        print(self.simulationsData)
-        for i in self.simulationsData:
-            for j in i.getData():
-                file.addText(str(j))
-                if(type(j)=="actionData"):
-                    for k in j:
-                        file.addText(k)
+        self.file = Txt_File()
+        self.file.addText("#########################################")
+        self.file.addText("Nombres de simulations :"+str(self.nbSim))
+        self.file.addText("#########################################")
+        for i in range(len(self.simulationsData)):
+            li = self.simulationsData[i].getData()
+            self.file.addText("\n")
+            self.file.addText("********")
+            self.file.addText("- Simulation n'"+str(i+1))
+            self.file.addText("- Joueur A : " +str(li[3]))
+            self.file.addText("- Joueur B : " +str(li[4]))
+            self.file.addText("- Vainqueur : "+str(li[0]))
+            self.file.addText("- Nombre(s) de plis : "+str(li[1]))
+            self.file.addText("- Nombre(s) de bataille(s) : "+str(li[2]))
+            self.file.addText("- Durée estimée de la partie : "+str(li[6]))
+            self.file.addText("**")
+            self.file.addText("- Historiques des mouvements :")
+            for k in li[5]:
+                self.file.addText(str(k))
+            self.file.addText("********")
 
 
-si = Simulateur(2000)
+si = Simulateur(1)
 si.runSimulations()
 si.dataFile()
