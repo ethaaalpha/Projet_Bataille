@@ -133,7 +133,6 @@ history_list.place(x=5, y=335)
 
 def launch_command():
     nbSim = nbSim_entry.get()
-    print(nbSim)
     #test value nb Sim
     try:
         nbSim = int(nbSim)
@@ -146,11 +145,8 @@ def launch_command():
 
     configA = getListFromEntry(configA_entry)
     configB = getListFromEntry(configB_entry)
-    print(configA)
-    print(configB)
 
     nbMaxEq = nbMaxEq_entry.get()
-    print(nbMaxEq)
     try:
         nbMaxEq = int(nbMaxEq)
         if(nbMaxEq>4000): #limit
@@ -165,7 +161,6 @@ def launch_command():
         history = True
     else:
         history = None
-    print(history)
 
     Si = Simulateur(nombreSimulations=nbSim, configurationA=configA, configurationB=configB, history=history, maxEq=nbMaxEq)
     Si.runSimulations()

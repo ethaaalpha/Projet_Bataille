@@ -17,6 +17,7 @@ class Simulateur():
         for i in range(self.nbSim):
             si = Simulation_JBataille(configurationA=self.configurationA, configurationB=self.configurationB, history=self.history, maxEq=self.maxEq)
             self.simulationsData.append(si.getSimulationData())
+            print(i)
 
     def getWinnerStats(self):
         vA = 0
