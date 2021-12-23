@@ -3,8 +3,7 @@ from utils import *
 from random import *
 from file_edit import *
 
-class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
-
+class Simulation_JBataille(): #permet de lancer UNE simulation
     def __init__(self, configurationA, configurationB, history, maxEq):
         self.vainqueur = None
         self.data = simulationData()
@@ -12,15 +11,13 @@ class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
         self.maxEq = maxEq
 
         config = Configuration(cardsA=configurationA, cardsB=configurationB).getCards()
-        self.main1 = self.convertirListeToFile(config[0])
+        self.main1 = self.convertirListeToFile(config[0]) #on met sous forme de file
         self.main2 = self.convertirListeToFile(config[1])
-
         self.data.setUpMain(config[0], "A")
         self.data.setUpMain(config[1], "B")
 
         self.simulation()
 
-        #mettre ne file
     def getSimulationData(self):
         return self.data
 
@@ -34,25 +31,28 @@ class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
         while(self.vainqueur == None):
             self.data.addRound()
             self.jeu()
-            if(self.data.getRounds() > self.maxEq):
+            if(self.data.getRounds() > self.maxEq): #si on dépasse le nombreEq
                 self.data.setWinner("Egalité")
                 self.vainqueur = "Egalité"
+
         self.data.setWinner(self.vainqueur)
 
     def jeu(self, tas=[]):
         a_ = self.main1.defile()
         b_ = self.main2.defile()
+
         if (a_ == None):
             self.vainqueur = ("B")
             return
         elif (b_ == None):
             self.vainqueur = ("A")
             return
-        a = int(str(a_)[1:]) #pour supprimer le 1er chiffre
+
+        a = int(str(a_)[1:]) #pour supprimer le 1er chiffre et enlever la "couleur" de la carte
         b = int(str(b_)[1:])
+
         tas.append(a_)
         tas.append(b_)
-
         if(a>b):
             self.data.addAction(actionData(str(a_), str(b_), "A", self.main1.taille(), self.main2.taille(), self.history))
             for i in tas:

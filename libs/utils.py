@@ -88,7 +88,7 @@ class Configuration():
                 self.Jcartes.remove(i)
         self.config[0] = self.config[0] + L
 
-        if(len(cardsA)!=16):
+        if(len(cardsA)!=16): # si jeu complet on mélange pas
             self.config[0] = sample(self.config[0], len(self.config[0])) #shuffle/mélange la liste
 
         L2 = sample(self.Jcartes, 16 - len(self.config[1])) #pareil avec Jeu B
@@ -99,7 +99,6 @@ class Configuration():
 
         if(len(cardsB)!=16):
             self.config[1] = sample(self.config[1], len(self.config[1]))
-
 
     def getCards(self):
         return self.config
@@ -115,6 +114,7 @@ class Configuration():
         for i in cardList:
             self.addCard(i, l)
 
+#informations récupérées lors des simulations
 class simulationData():
     def __init__(self):
         self.actions = []
@@ -173,6 +173,7 @@ class simulationData():
     def __str__(self):
         return str(self.mainA)+str(self.mainB)
 
+#objet pour les actions et différents plis
 class actionData():
     def __init__(self, cardA, cardB, winner, tmain1, tmain2, history):
         if(history == None):

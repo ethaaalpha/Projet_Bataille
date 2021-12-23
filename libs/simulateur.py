@@ -3,7 +3,7 @@ from file_edit import *
 from utils import Configuration
 import os
 
-class Simulateur():
+class Simulateur(): #pour lancer plusieurs simulations à la suite
     def __init__(self, nombreSimulations=1, configurationA=None, configurationB=None, history=None, maxEq=200): #liste d'un maximum de 16 par joueur sans répétition de cartes
         self.nbSim = nombreSimulations
         self.simulationsData = []
@@ -13,12 +13,13 @@ class Simulateur():
         self.maxEq = maxEq
 
 
-    def runSimulations(self):
+    def runSimulations(self): #lancer les simulations
         for i in range(self.nbSim):
             si = Simulation_JBataille(configurationA=self.configurationA, configurationB=self.configurationB, history=self.history, maxEq=self.maxEq)
             self.simulationsData.append(si.getSimulationData())
             print(i)
 
+    #partie gestion des données récupérées
     def getWinnerStats(self):
         vA = 0
         vB = 0
@@ -33,7 +34,7 @@ class Simulateur():
                 vE = vE+1
         return (vA, vB, vE)
 
-    def getNumberRounds(self):
+    def getNumberRounds(self): #
         nb = 0
         for i in range(len(self.simulationsData)):
             li = self.simulationsData[i].getData()
@@ -47,6 +48,7 @@ class Simulateur():
             nb = nb + int(li[2])
         return nb
 
+    #pour créer le fichier texte
     def dataFile(self):
         self.file = Txt_File()
         self.file.addText("#########################################")
@@ -56,16 +58,18 @@ class Simulateur():
         self.file.addText("Nombres de victoires du joueur B : "+str(self.getWinnerStats()[1]) +" ("+str(round((self.getWinnerStats()[1]/self.nbSim)*100, 2))+"%)")
         self.file.addText("Nombres de parties nulle : "+str(self.getWinnerStats()[2]) +" ("+str(round((self.getWinnerStats()[2]/self.nbSim)*100, 2))+"%)")
         self.file.addText("***")
+
         self.file.addText("SN = Satistiques calculées en enlevant les parties nulles.")
         nombreRoundsSN = self.getNumberRounds()-(self.getWinnerStats()[2]*(self.maxEq+1))
         nombreSimSN = self.nbSim-self.getWinnerStats()[2]
+
         if(nombreSimSN == 0):
             nombreSimSN = 1
         self.file.addText("Nombres de plis moyens d'une partie (SN) : "+str(round(nombreRoundsSN/nombreSimSN)))
         self.file.addText("Nombres de batailles moyennes par partie : "+str(round(self.getNumberBattles()/int(self.nbSim))))
         self.file.addText("Durée moyenne d'une partie (SN) : "+str(round(nombreRoundsSN/nombreSimSN*10/60))+" minutes")
         self.file.addText("***")
-        #faire statistiques
+
         self.file.addText("#########################################")
         for i in range(len(self.simulationsData)):
             li = self.simulationsData[i].getData()
@@ -87,5 +91,5 @@ class Simulateur():
 
         self.file.close()#ferme l'instance d'édition du fichier
 
-    def showFile(self):
+    def showFile(self): #permet d'ouvrir le fichier écrit (avec un éditeur de texte)
         os.startfile(os.getcwd()+"\\simulations\\"+self.file.txt_name)

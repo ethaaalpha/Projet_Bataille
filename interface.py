@@ -7,6 +7,7 @@ from tkinter import *
 from tkinter import ttk,font, messagebox
 from textwrap import wrap
 
+#class
 class Window():
     def __init__(self):
         self.window = Tk()
@@ -86,8 +87,10 @@ class Text():
     def destroy(self):
         self.canvas.destroy()
 
+#colors
 color_bg = "#B4EDD2"
 color_text = "#212227"
+
 #window
 wd = Window()
 wd.setWindowSize(False, 400,500)
@@ -127,12 +130,13 @@ nbMaxEq_entry.place(x=5, y=275)
 
 history_text = Text(wd.Window_Tk_Object(), 225, 25, size=12, bgcolor=color_bg, text="• Historiques des mouvements :", colortext=color_text)
 history_text.place(10, 310)
-history_list = ttk.Combobox(wd.Window_Tk_Object(), values=["Oui", "Non"])
+history_list = ttk.Combobox(wd.Window_Tk_Object(), values=["Oui", "Non"], width=8)
 history_list.current(1)
 history_list.place(x=5, y=335)
 
 def launch_command():
     nbSim = nbSim_entry.get()
+
     #test value nb Sim
     try:
         nbSim = int(nbSim)
@@ -196,15 +200,15 @@ def getListFromEntry(entry):
                 return False
     return l
 
+#button
+ft = font.Font(family="Comic Sans Ms", size=20)
+launch_button = Button(wd.Window_Tk_Object(), text="Lancer", bg="#8D94BA", font=ft, command=launch_command)
+launch_button.place(x=145, y=390)
+
 #109,312,407,110,413,411,409,113,412,307,108,410,309,208,209,114
 #107,111,112,207,210,211,212,213,214,308,310,311,313,314,408,414
 
 #411,208,211,314,109,209,407,414,112,313,312,111,412,113,107,214
 #108,110,114,207,210,212,213,307,308,309,310,311,408,409,410,413
-
-#button
-ft = font.Font(family="Comic Sans Ms", size=20)
-launch_button = Button(wd.Window_Tk_Object(), text="Lancer", bg="#8D94BA", font=ft, command=launch_command)
-launch_button.place(x=145, y=390)
 
 mainloop()
