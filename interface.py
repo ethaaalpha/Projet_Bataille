@@ -137,25 +137,30 @@ def launch_command():
     try:
         nbSim = int(nbSim)
         if(nbSim>100000): #limit
-            messagebox.showerror("Erreur","Nombres de simulations trop importantes")
+            messagebox.showerror("Erreur","Nombre de simulations trop importantes")
             return
     except:
-        messagebox.showerror("Erreur","Valeur impossible pour le nombres de simulations")
+        messagebox.showerror("Erreur","Valeur impossible pour le nombre de simulations")
         return
 
+    #config A et B
     configA = getListFromEntry(configA_entry)
+    if configA == False : return
     configB = getListFromEntry(configB_entry)
+    if configB == False : return
 
+    #pour le nombre max de plis avant égalité
     nbMaxEq = nbMaxEq_entry.get()
     try:
         nbMaxEq = int(nbMaxEq)
         if(nbMaxEq>4000): #limit
-            messagebox.showerror("Erreur","Nombres de plis max avant égalité trop important")
+            messagebox.showerror("Erreur","Nombre de plis max avant égalité trop important")
             return
     except:
-        messagebox.showerror("Erreur","Valeur impossible pour le nombres max de plis avant égalité")
+        messagebox.showerror("Erreur","Valeur impossible pour le nombre max de plis avant égalité")
         return
 
+    #pour avoir l'historiques des mouvements
     history = history_list.get()
     if(history == "Oui"):
         history = True
@@ -172,18 +177,23 @@ def getListFromEntry(entry):
     item = entry.get()
     item = wrap(item, 4) #sépare tous les 4 caractères
     l = []
-    for i in item:
-        l.append(int(i.removesuffix(","))) #remove ,
+    try :
+        for i in item:
+            l.append(int(i.removesuffix(","))) #remove ,
+    except:
+        messagebox.showerror("Erreur", "Syntaxe de la configuration incorrecte ")
+        return False
+
     if(len(l)>0):
         for i in l:
             if(len(str(i))!=3):
                 messagebox.showerror("Erreur", "Syntaxe de la configuration incorrecte ")
-                return
+                return False
             try:
                 i = int(i)
             except:
                 messagebox.showerror("Erreur", "Syntaxe de la configuration incorrecte ")
-                return
+                return False
     return l
 
 #109,312,407,110,413,411,409,113,412,307,108,410,309,208,209,114
