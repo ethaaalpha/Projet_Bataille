@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # coding: utf8
+import sys
+sys.path.insert(1, "libs/")
 from simulateur import Simulateur
 from tkinter import *
 from tkinter import ttk,font, messagebox
@@ -85,7 +87,6 @@ class Text():
         self.canvas.destroy()
 
 color_bg = "#B4EDD2"
-#color_bg = "GRAY"
 color_text = "#212227"
 #window
 wd = Window()
@@ -197,7 +198,5 @@ def getListFromEntry(entry):
 ft = font.Font(family="Comic Sans Ms", size=20)
 launch_button = Button(wd.Window_Tk_Object(), text="Lancer", bg="#8D94BA", font=ft, command=launch_command)
 launch_button.place(x=145, y=390)
-
-
 
 mainloop()
