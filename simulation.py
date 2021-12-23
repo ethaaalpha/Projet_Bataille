@@ -5,9 +5,11 @@ from file_edit import *
 
 class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
 
-    def __init__(self, configurationA=None, configurationB=None):
+    def __init__(self, configurationA, configurationB, history, maxEq):
         self.vainqueur = None
         self.data = simulationData()
+        self.history = None
+        self.maxEq = maxEq
 
         config = Configuration(cardsA=configurationA, cardsB=configurationB).getCards()
         self.main1 = self.convertirListeToFile(config[0])
@@ -32,8 +34,7 @@ class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
         while(self.vainqueur == None):
             self.data.addRound()
             self.jeu()
-            print(self.data.getRounds())
-            if(self.data.getRounds() > 2000):
+            if(self.data.getRounds() > self.maxEq):
                 self.data.setWinner("Egalité")
                 self.vainqueur = "Egalité"
         self.data.setWinner(self.vainqueur)
@@ -53,20 +54,20 @@ class Simulation_JBataille(): #code sous forme de classe car poo c'est mieux
         tas.append(b_)
 
         if(a>b):
-            self.data.addAction(actionData(str(a_), str(b_), "A", self.main1.taille(), self.main2.taille()))
+            self.data.addAction(actionData(str(a_), str(b_), "A", self.main1.taille(), self.main2.taille(), self.history))
             for i in tas:
                 self.main1.enfile(i)
             tas.clear()
             return "A" #carte a gagnante
 
         elif(a<b):
-            self.data.addAction(actionData(str(a_), str(b_), "B", self.main1.taille(), self.main2.taille()))
+            self.data.addAction(actionData(str(a_), str(b_), "B", self.main1.taille(), self.main2.taille(), self.history))
             for i in tas:
                 self.main2.enfile(i)
             tas.clear()
             return "B" #carte b gagnante
         else:
-            self.data.addAction(actionData(str(a_), str(b_), "BATAILLE", self.main1.taille(), self.main2.taille()))
+            self.data.addAction(actionData(str(a_), str(b_), "BATAILLE", self.main1.taille(), self.main2.taille(), self.history))
             tas.append(self.main1.defile()) #carte retournées lors de la bataille
             tas.append(self.main2.defile())
             self.data.addBattle()

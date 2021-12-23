@@ -87,12 +87,15 @@ class Configuration():
             if(i in self.Jcartes):
                 self.Jcartes.remove(i)
         self.config[0] = self.config[0] + L
+        self.config[0] = sample(self.config[0], len(self.config[0])) #shuffle/mélange la liste
 
         L2 = sample(self.Jcartes, 16 - len(self.config[1])) #pareil avec Jeu B
         for i in L2:
             if(i in self.Jcartes):
                 self.Jcartes.remove(i)
         self.config[1] = self.config[1] + L2
+        self.config[1] = sample(self.config[1], len(self.config[1]))
+
 
     def getCards(self):
         return self.config
@@ -161,17 +164,19 @@ class simulationData():
         return self.numberRound*10
 
     def getData(self):
-        return (self.winner, self.numberRound, self.numberBattle, self.mainA, self.mainB, self.actions, self.getDuration())
+        return (self.winner, self.numberRound, self.numberBattle, self.mainA, self.mainB, self.getDuration(), self.actions)
 
     def __str__(self):
         return str(self.mainA)+str(self.mainB)
+
 class actionData():
-    def __init__(self, cardA, cardB, winner, tmain1, tmain2):
-        self.cardA = cardA
-        self.cardB = cardB
-        self.winner = winner
-        self.tmain1 = tmain1
-        self.tmain2 = tmain2
+    def __init__(self, cardA, cardB, winner, tmain1, tmain2, history):
+        if(history == None):
+            self.cardA = cardA
+            self.cardB = cardB
+            self.winner = winner
+            self.tmain1 = tmain1
+            self.tmain2 = tmain2
 
     def getData(self):
         return (self.cardA, self.cardB, self.winner)
