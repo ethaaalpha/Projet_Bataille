@@ -194,6 +194,9 @@ def getListFromEntry(entry):
 #109,312,407,110,413,411,409,113,412,307,108,410,309,208,209,114
 #107,111,112,207,210,211,212,213,214,308,310,311,313,314,408,414
 
+#411,208,211,314,109,209,407,414,112,313,312,111,412,113,107,214
+#108,110,114,207,210,212,213,307,308,309,310,311,408,409,410,413
+
 #button
 ft = font.Font(family="Comic Sans Ms", size=20)
 launch_button = Button(wd.Window_Tk_Object(), text="Lancer", bg="#8D94BA", font=ft, command=launch_command)
