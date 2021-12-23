@@ -2,6 +2,8 @@
 # coding: utf8
 from simulateur import Simulateur
 from tkinter import *
+from tkinter import ttk,font, messagebox
+from textwrap import wrap
 
 class Window():
     def __init__(self):
@@ -82,8 +84,8 @@ class Text():
     def destroy(self):
         self.canvas.destroy()
 
-#color_bg = "#B4EDD2"
-color_bg = "GRAY"
+color_bg = "#B4EDD2"
+#color_bg = "GRAY"
 color_text = "#212227"
 #window
 wd = Window()
@@ -95,14 +97,107 @@ wd.setBgColor("#B4EDD2")
 
 
 #text
-top_text = Text(wd.Window_Tk_Object(), 140, 35, bgcolor=color_bg, text="Simulateur", size=20, colortext=color_text)
+top_text = Text(wd.Window_Tk_Object(), 210, 60, bgcolor=color_bg, text="Simulateur", size=30, colortext=color_text)
 top_text.setBold()
-top_text.place(130,10)
+top_text.place(95,10)
 
 #config_utils_menu
-nbSim_text = Text(wd.Window_Tk_Object(), 160, 20, size=10, bgcolor=color_bg, text="• Nombres de simulations :", colortext=color_text)
-nbSim_text.place(10, 60)
+nbSim_text = Text(wd.Window_Tk_Object(), 195, 25, size=12, bgcolor=color_bg, text="• Nombres de simulations :", colortext=color_text)
+nbSim_text.place(10, 80)
+nbSim_entry = Entry(wd.Window_Tk_Object(), width=8)
+nbSim_entry.insert(0, 1)
+nbSim_entry.place(x=5, y=105)
 
-nbSim_entry = Entry(wd.get)
+configA_text = Text(wd.Window_Tk_Object(), 210, 25, size=12, bgcolor=color_bg, text="• Configuration du joueur A :", colortext=color_text)
+configA_text.place(10, 130)
+configA_entry = Entry(wd.Window_Tk_Object(), width=64)
+configA_entry.place(x=5, y=155)
+
+configB_text = Text(wd.Window_Tk_Object(), 210, 25, size=12, bgcolor=color_bg, text="• Configuration du joueur B :", colortext=color_text)
+configB_text.place(10, 190)
+configB_entry = Entry(wd.Window_Tk_Object(), width=64)
+configB_entry.place(x=5, y=215)
+
+nbMaxEq_text = Text(wd.Window_Tk_Object(), 240, 25, size=12, bgcolor=color_bg, text="• Nombres de plis avant égalité :", colortext=color_text)
+nbMaxEq_text.place(10, 250)
+nbMaxEq_entry = Entry(wd.Window_Tk_Object(), width=6)
+nbMaxEq_entry.insert(0, 200)
+nbMaxEq_entry.place(x=5, y=275)
+
+history_text = Text(wd.Window_Tk_Object(), 225, 25, size=12, bgcolor=color_bg, text="• Historiques des mouvements :", colortext=color_text)
+history_text.place(10, 310)
+history_list = ttk.Combobox(wd.Window_Tk_Object(), values=["Oui", "Non"])
+history_list.current(1)
+history_list.place(x=5, y=335)
+
+def launch_command():
+    nbSim = nbSim_entry.get()
+    print(nbSim)
+    #test value nb Sim
+    try:
+        nbSim = int(nbSim)
+        if(nbSim>100000): #limit
+            messagebox.showerror("Erreur","Nombres de simulations trop importantes")
+            return
+    except:
+        messagebox.showerror("Erreur","Valeur impossible pour le nombres de simulations")
+        return
+
+    configA = getListFromEntry(configA_entry)
+    configB = getListFromEntry(configB_entry)
+    print(configA)
+    print(configB)
+
+    nbMaxEq = nbMaxEq_entry.get()
+    print(nbMaxEq)
+    try:
+        nbMaxEq = int(nbMaxEq)
+        if(nbMaxEq>4000): #limit
+            messagebox.showerror("Erreur","Nombres de plis max avant égalité trop important")
+            return
+    except:
+        messagebox.showerror("Erreur","Valeur impossible pour le nombres max de plis avant égalité")
+        return
+
+    history = history_list.get()
+    if(history == "Oui"):
+        history = True
+    else:
+        history = None
+    print(history)
+
+    Si = Simulateur(nombreSimulations=nbSim, configurationA=configA, configurationB=configB, history=history, maxEq=nbMaxEq)
+    Si.runSimulations()
+    Si.dataFile()
+    Si.showFile()
+
+
+def getListFromEntry(entry):
+    item = entry.get()
+    item = wrap(item, 4) #sépare tous les 4 caractères
+    l = []
+    for i in item:
+        l.append(int(i.removesuffix(","))) #remove ,
+    if(len(l)>0):
+        for i in l:
+            if(len(str(i))!=3):
+                messagebox.showerror("Erreur", "Syntaxe de la configuration incorrecte ")
+                return
+            try:
+                i = int(i)
+            except:
+                messagebox.showerror("Erreur", "Syntaxe de la configuration incorrecte ")
+                return
+    return l
+
+#109,312,407,110,413,411,409,113,412,307,108,410,309,208,209,114
+#107,111,112,207,210,211,212,213,214,308,310,311,313,314,408,414
+
+#button
+ft = font.Font(family="Comic Sans Ms", size=20)
+launch_button = Button(wd.Window_Tk_Object(), text="Lancer", bg="#8D94BA", font=ft, command=launch_command)
+launch_button.place(x=145, y=390)
+
+
 
 mainloop()

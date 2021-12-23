@@ -1,6 +1,7 @@
 from simulation import Simulation_JBataille
 from file_edit import *
 from utils import Configuration
+import os
 
 class Simulateur():
     def __init__(self, nombreSimulations=1, configurationA=None, configurationB=None, history=None, maxEq=200): #liste d'un maximum de 16 par joueur sans répétition de cartes
@@ -82,9 +83,15 @@ class Simulateur():
             self.file.addText("********")
 
         self.file.close()#ferme l'instance d'édition du fichier
+
+    def showFile(self):
+        os.startfile(os.getcwd()+"\\simulations\\"+self.file.txt_name)
+
+
 """
 config = Configuration([114,214,314,414])
-si = Simulateur(100000, configurationA=config.getCards()[0], configurationB=config.getCards()[1])
+si = Simulateur(10, configurationA=config.getCards()[0], configurationB=config.getCards()[1])
 si.runSimulations()
 si.dataFile()
+si.showFile()
 """

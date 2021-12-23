@@ -87,14 +87,18 @@ class Configuration():
             if(i in self.Jcartes):
                 self.Jcartes.remove(i)
         self.config[0] = self.config[0] + L
-        self.config[0] = sample(self.config[0], len(self.config[0])) #shuffle/mélange la liste
+
+        if(len(cardsA)!=16):
+            self.config[0] = sample(self.config[0], len(self.config[0])) #shuffle/mélange la liste
 
         L2 = sample(self.Jcartes, 16 - len(self.config[1])) #pareil avec Jeu B
         for i in L2:
             if(i in self.Jcartes):
                 self.Jcartes.remove(i)
         self.config[1] = self.config[1] + L2
-        self.config[1] = sample(self.config[1], len(self.config[1]))
+
+        if(len(cardsB)!=16):
+            self.config[1] = sample(self.config[1], len(self.config[1]))
 
 
     def getCards(self):
